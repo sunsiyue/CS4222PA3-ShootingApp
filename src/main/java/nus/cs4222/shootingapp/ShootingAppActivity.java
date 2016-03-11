@@ -292,42 +292,22 @@ public class ShootingAppActivity
     private void processOrientation( SensorEvent event ) {
 
         float[] orientationVals = new float[3];
-        float[] mRotationMatrixFromVector = new float[9];
-
-
+        float[] mRotationMatrix = new float[9];
 
         //get Rotation vector
-        SensorManager.getRotationMatrixFromVector(mRotationMatrixFromVector, event.values);
-//        SensorManager.remapCoordinateSystem(mRotationMatrixFromVector,
-//                SensorManager.AXIS_X, SensorManager.AXIS_Z,
-//                mRotationMatrix);
-        SensorManager.getOrientation(mRotationMatrixFromVector, orientationVals);
+        SensorManager.getRotationMatrixFromVector(mRotationMatrix, event.values);
+        SensorManager.getOrientation(mRotationMatrix, orientationVals);
 
+        //convert R to D
         for (int i =0; i<orientationVals.length; i++) {
             orientationVals[i] = Math.round(Math.toDegrees(orientationVals[i]));
         }
 
-
-        // Optionally convert the result from radians to degrees
-//        orientationVals[0] = (float) Math.toDegrees(orientationVals[0]);
-//        orientationVals[1] = (float) Math.toDegrees(orientationVals[1]);
-//        orientationVals[2] = (float) Math.toDegrees(orientationVals[2]);
-
-
-        //tv.setText(" Yaw: " + orientationVals[0] + "\n Pitch: "
-//                + orientationVals[1] + "\n Roll (not used): "
-//                + orientationVals[2]);
-
+        //Assign value to variable for GUI
         shootingDirection = orientationVals[0] +179;
         System.out.println("This is direction: " + shootingDirection);
         shootingRegion = (int) shootingDirection/45 +1;
-
     }
-
-
-
-
-
 
     /** Detect the shooting direction and region. */
     private void detectShootingDirectionAndRegion( SensorEvent event ) {
@@ -585,7 +565,7 @@ public class ShootingAppActivity
     private Sensor acclSensor;
     /** Gravity sensor. */
     private Sensor gravitySensor;
-
+    /** Rotation Vector Sensor**/
     private Sensor orientationSensor;
 
     // Gravity sensor
